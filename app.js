@@ -4,7 +4,13 @@ const port = 3000
 const moment = require('moment')
 
 app.use(function (req, res, next) {
-  console.log('Time:', moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'), '| Request Type:', req.method, '| Request URL', req.originalUrl)
+  let start = Date.now()
+  console.log('Request Time:', moment(start).format('YYYY-MM-DD HH:mm:ss'), '|', req.method, 'from', req.originalUrl)
+  res.on("finish", () => {
+    let end = Date.now()
+    let elapsed = String(end - start)
+    console.log('Request Time:', moment(start).format('YYYY-MM-DD HH:mm:ss'), '|', req.method, 'from', req.originalUrl, '| total time: ', elapsed, 'milliseconds')
+  })
   next()
 })
 
